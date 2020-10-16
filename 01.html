@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- header -->
+    <script src="http://res.wx.qq.com/connect/zh_CN/htmledtion/js/wxLogin.js"></script>
+    <header class="header-wrap">
+        <h1 class="logo-center">
+            <a href="/"><img src="#" alt="logo"></a>
+        </h1>
+        <div class="header-con">
+            <div class="wrapper">
+                <div class="nav-main clearfix">
+                    <a href="#" class="active">首页</a>
+                    <a href="#" class="">教程</a>
+                    <a href="#" class="">曲谱</a>
+                    <a href="#" class="">文章</a>
+                    <a href="#" class="">商店</a>
+                    <a href="#" class="">vip</a>
+                    <a href="#" class="">小程序</a>
+                    <a href="#" class="">新手入口</a>
+                </div>
+                <div class="seacher-weap">
+                    <form action="/search/" method="POST">
+                        <input type="hidden" name="-csrf-frontend" id="_csrf" value="eMFJCNmBkJc3PjLHko0G7ZMU5M50Ky9mG_xKNtZ_ARw8qBBMo8yh43tGcbT_2FaP52OlpwFiZhZ-lQ1pjjp1UA=="/>
+                        <input type="hidden" name="sea-type" id="searchType" value="0">
+                        <div id="comSearch" class="search-box" ></div>
+                        <input type="text" name="search" id="search" />
+                        <button type="submit"></button>
+                    </form>
+                </div>
+                <div class="user-weap clearfix">
+                    <span onclick="showLogin()">登录</span>
+                    <span onclick="showRegister()">注册</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="lo-wrapper" id="register" style="display:none">
+        <h4 class="lo-tit">新用户注册</h4>
+        <form action="/register/index/" onsubmit="return false" id="registerForm">
+            <input type="hidden" name="_csrf-frontend" id="_csrf" value="eMFJCNmBkJc3PjLHko0G7ZMU5M50Ky9mG_xKNtZ_ARw8qBBMo8yh43tGcbT_2FaP52OlpwFiZhZ-lQ1pjjp1UA=="/>
+            <input type="text" placeholder="用户名" name="uname" class="lo-input" />
+            <input type="password" placeholder="输入密码 长度 8-16位，必须包含数字字母" name="pwd" class="lo-input" />
+            <input type="password" placeholder="再次输入密码" name="cpwd" class="lo-input" />
+            <button type="button" class="li-btn lo-submit" onclick="register()">注 &nbsp; &nbsp; ;&nbsp; &nbsp; 册</button>
+        </form>
+        <div class="lo-icon">
+            <img src="http://cache1.tenholes.com/pc/images/logo_wechat.png" onclick="wx()" alt="">
+        </div>
+        <p class="lo-text" onclick="showLogin()">已有账户直接登录</p>
+        <p class="lo-tap" onclick="cliseLyerBox">随便看看</p>
+    </div>
+    <!-- login -->
+    <div class="lo-wrapper" id="login" style="display: none;">
+        <h4 class="lo-tit" >登录</h4>
+        <form onsubmit="return false" id="loginForm">
+            <input type="hidden" name="_csrf-frontend" id="_csrflogin" value="eMFJCNmBkJc3PjLHko0G7ZMU5M50Ky9mG_xKNtZ_ARw8qBBMo8yh43tGcbT_2FaP52OlpwFiZhZ-lQ1pjjp1UA=="/>
+            <input type="text" placeholder="手机/用户名" name="loginuname" class="lo-input" />
+            <input type="password" placeholder="请输入密码" name="loginpwd" class="lo-input" />
+            <div class="lo-repass clearfix" >
+                <label><input type="checkbox" name="remember">记住密码</label>
+                <p class="lo-forpass" onclick="showFindPassword()">忘记密码</p>
+
+            </div>
+            <button type="button" class="lo-btn lo-submit" onclick="login()"  >登 &nbsp; &nbsp; &nbsp; &nbsp; 录</button>
+        </form>
+        <p class="lo-text" onclick="showRrgisiter()">去注册</p>
+        <div class="lo-icon">
+            <img src="http://cache1.tenholes.com/pc/images/login_wechat.png" onclick="WX()" alt="">
+        </div>
+        <!-- findPassword -->
+        <div class="lo-wrapper" id="findPassword " style="display:none ;">
+            <h4 class="lo-tit">找回密码</h4>
+            <input type="hidden" name="_csrf-frontendfind" id="_csrffind" value="eMFJCNmBkJc3PjLHko0G7ZMU5M50Ky9mG_xKNtZ_ARw8qBBMo8yh43tGcbT_2FaP52OlpwFiZhZ-lQ1pjjp1UA=="/>
+			<input type="text" placeholder="用户名(或已绑定的手机号)" name="login_username" id="login_username" class="lo-input" />
+			<input type="text" placeholder="手机" name="findtel" id="findtel" class="lo-input" />
+			<div class="lo-code">
+				<input type="text" placeholder="请输入验证码" name="findCode" class="lo-input code" />
+				<button type="button" class="lo-btn lo-codebtn  CAPTCHABtn"  data-status="0" onclick="getVerificationCodeSend(this)">获取手机验证码</button>
+			</div>
+			<button type="button" class="lo-btn lo-submit" onclick="nextStepPassword()">下一步</button>
+		</div>
+        <!-- resetPassword -->
+        <div class="lo-wrapper" id="resetPassword" style="display: none;">
+            <h4 class="lo-tit" >重置密码</h4>
+            <p >密码长度为8-16位，必须包含数字 ，字母</p>
+            <input type="hidden" name="_csrf-frontendrset" id="_csrfrset" value="eMFJCNmBkJc3PjLHko0G7ZMU5M50Ky9mG_xKNtZ_ARw8qBBMo8yh43tGcbT_2FaP52OlpwFiZhZ-lQ1pjjp1UA==">
+            <input type="password" placeholder="输入新密码" name="setpassword" class="lo-input" />
+            <input type="password" placeholder="再次输入新密码" name="reSetPassword" class="lo-input" />
+            <button type="button" class="lo-btn lo-submit" onclick="changePassword()">确 &nbsp; &nbsp; &nbsp; &nbsp; 认</button>
+        </div>
+        <input type="hidden" id="wx-title" value="会员充值 - 蓝调口琴网" />
+        <input type="hidden" id="wx-img" value="http://www.tenholes.com/images/logo.png">
+        <input type="hidden" id="wx-con" value="口琴行业最专业网站，拥有多位名师，精品课程，适合各个阶段口琴爱好者学习！">
+        <input type="hidden" id="wx-link" value="http://www.tenholes.com:80/"/>
+        <!-- index nouser -->
+        <div class="i-banner swiper-container" id="touristBanner">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href="#"><img src="" alt=""></a>
+                </div>
+                <div class="swiper-slide">
+                    <a href=""><img src="" alt=""></a>
+                </div>
+            </div>
+            <div class="swiper-pagination"> </div>
+        </div>
+        <div class="wrapper class-bg">
+            <ul class="class-con clearfix">
+                <li>
+					<a href="/lessons/list?cid=3">
+						<img src="http://cache1.tenholes.com/pc/images/i_blues.png" />
+						布鲁斯口琴课程<br><span>bluesharp lessons</span>
+					</a>
+				</li>
+				<li>
+					<a href="/lessons/catelist?cid=7">
+						<img src="http://cache1.tenholes.com/pc/images/i_chro.png" />
+						半音阶口琴课程<br><span>chro-harmonica lessons</span>
+					</a>
+				</li>
+				<li>
+					<a href="/tabs/index/">
+						<img src="http://cache1.tenholes.com/pc/images/i_c2.png" />
+						口琴曲谱<br><span>harmonica tabs</span>
+					</a>
+				</li>
+            </ul>
+        </div>
+        <div class="in-text">
+            "我是一名纯新手，不知该学哪一种口琴"
+        </div>
+        <a href="#" class="in-btn">点击快速了解</a>
+        <div class="in-ads cleatfix">
+            <a target="_blank" href="https://tenholes.taobao.com/?spm=2013.1.1000126.3.451a3247iVwRGl"><img src="http://cache1.tenholes.com/20200817/202008171536424567.jpg" alt="我想买口琴" /></a>
+						<a target="_blank" href="article/view?id=593"><img src="http://cache1.tenholes.com/20200817/202008171536307895.jpg" alt="北京口琴课" /></a>
+        </div>
+        <ul class="about-item clearfix">
+            <li onclick="previewImg(this,'/images/ewm.jpg')">
+                <span class="wechat"></span>
+                微信公众号<br>蓝调口琴网
+            </li>
+            <li>
+                <a target="_blank" href="https://shop59847507.taobao.com/">
+                    <span class="taobao"></span>
+                    官方淘宝店<br>蓝调口琴网
+                </a>
+            </li>
+            <li onclick="previewImg(this,'/images/kqkxcx.jpg')">
+                <span class="xcx"></span>
+                微信小程序<br>“口琴课”
+            </li>
+            <li id="helperBar">
+                <a href="javascript:void(0)"><span class="qq"></span>与客服同学<br>唠唠嗑</a>
+            </li>
+        </ul>
+        <!-- 消息，私信内容 -->
+        <div id="helperPopBox" style="display: none;">
+            <div class="helper-bg"></div>
+            <div class="helper-con">
+                <section class="helper-tit">
+                    <a href="http://wpa.qq.com/msgrd?v=3&uin=3114308569&site=qq&menu=yes" class="hspan" >人工客服</a>
+                    篮网小助手
+                    <span id="helperCliseBar">关闭</span>
+                </section>
+                <div class="helper-wrap " id="helperWrap">
+                    <section class="helper-word hl-word flex">
+                        <img src="#" alt="">
+                        <p>您好，我是篮网小助手，可以解答您的问题</p>
+                    </section>
+                </div>
+                <div class="helper-send flex">
+                    <input type="text" name="letter" id="helperSendText" placeholder="在这里输入您要提问的问题">
+                    <button type="button" id="helperSendBtn">发送 </button>
+                </div>
+            </div>
+
+        </div>
+        <script type="text/html" id="helperTemplate">
+            <section class="helper-word hr-word flex">
+                <p>${helperText}</p>
+                <img src="/images/user.png" />
+            </section>
+        </script>
+        
+        <script type="text/html" id="helperResponseTemplate">
+           <section class="helper-word hl-word flex">
+                <img src="/images/kf_avatar.png" />
+                <p>{{html resText}}</p>
+            </section>
+        </script>
+        </div>
+        <script src="/js/jquery-3.4.1.min.js?v=1599013993"></script>
+        <script src="/js/SelectBox.min.js?v=1599013993"></script>
+        <script src="/js/common.js?v=1600307869"></script>
+        <script src="/layer/layer.js?v=1599013993"></script>
+        <script src="/js/swiper.min.js?v=1599443022"></script>
+        <script src="/js/jquery.tmpl.min.js?v=1599013993"></script>
+        <script> 
+            var bannerSwiper = new Swiper('#touristBanner', {
+                autoplay: true,
+                loop : true,
+                pagination: {
+                  el: '.swiper-pagination'
+                },
+            });
+        
+            $(function(){
+                //显示弹窗
+                $("#helperBar").click(function(){
+                    $("#helperPopBox").show();
+                });
+                
+                
+                //聊天窗口
+                var HWHeight = $(window).height() - 156;
+                $("#helperWrap").height(HWHeight);
+                
+                //关闭
+                $(document).on("click","#helperCloseBar",function(){
+                    $("#helperPopBox").hide();
+                })
+        
+                //发送
+                $("#helperSendBtn").click(function(){
+                    var csrfToken = $('#_csrf').val();
+                    var helperObj = {};
+                    helperObj.helperText = $("#helperSendText").val();
+                    
+                    if(helperObj.helperText == ''){
+                        layer.msg("请输入发送内容");  
+                        return false;
+                    }
+                    $("#helperTemplate").tmpl(helperObj).appendTo("#helperWrap");
+                    $("#helperSendText").val("");
+        
+                    $.ajax({
+                        type : "POST",
+                        dataType:"text",
+                        url : "/customer-service/index/",
+                        data : {"_csrf-frontend":csrfToken,"text": helperObj.helperText},
+                        success : function(result) {
+                            console.log(result);
+                            if(result != ""){
+                                var resObj = {};
+                                var n = result.search('[点击]');
+                                if(n > 0 ){
+                                    var regx = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/;
+                                    var rs = regx.exec(result);
+                                    var value = rs[0];
+                                    result = result.replace('[点击]('+rs[0]+')'+rs[0]+'查看',"点击<a style='color: blue' href='"+rs[0]+"'>查看</a>");
+                                }
+                                resObj.resText = result;
+                                $("#helperResponseTemplate").tmpl(resObj).appendTo("#helperWrap");
+                            }
+                        }
+                    }); 
+                });
+            });
+        </script>   
+<!-- footer -->
+<footer class="footer">
+    <div class="wrapper-s clearfix">
+        <dl class="footer-nav">
+            <dt>关于我们</dt>
+            <dd><a href="#">网站介绍</a></dd>
+            <dd><a href="#">加入我们</a></dd>
+        </dl>
+        <dl class="footer-nav">
+            <dt>关注我们</dt>
+            <dd><a href="javascript:void(0);" onclick="previvwImg(this,'/images/ewm.jpg')">官方微信</a></dd>
+            <dd><a target="_blank" href="https://weibo.com/u/2415743041">官方微博</a></dd>
+        </dl>
+        <dl class="footer-nav">
+            <dt>联系我们</dt>
+            <dd>E-mail : soharp@163.com</dd>
+
+        </dl>
+    </div>
+    <div class="wrapper footer-text">
+        Copyright(c) 2009-2020 www.tenholes.com ALL Rights Reserved 京ICP备15046512号
+    </div>
+</footer>
+    </div>
+
+</body>
+</html>
